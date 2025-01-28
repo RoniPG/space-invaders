@@ -30,9 +30,6 @@ class Enemy {
         const rightmostEnemy = this.findRightmostEnemy(this.enemyRows);
         const leftmostEnemy = this.findLeftmostEnemy(this.enemyRows);
 
-        // console.log("rightmostEnemy:", rightmostEnemy, "leftmostEnemy:", leftmostEnemy);
-
-
         if (rightmostEnemy.x + this.width >= this.ctx.canvas.width ||
             leftmostEnemy.x < 0
         ) {

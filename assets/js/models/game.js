@@ -11,8 +11,11 @@ class Game {
         this.background = new Background(this.ctx);
         this.enemy = new Enemy(this.ctx);
         this.player = new Player(this.ctx);
+
+        this.setShotInterval = 0;
     }
     onKeyEvent(event) {
+        this.player.onKeyEvent(event);
     }
 
     start() {
@@ -21,6 +24,10 @@ class Game {
                 this.clear();
                 this.draw();
                 this.move();
+                this.setShotInterval++;
+                if (this.setShotInterval >= 1000) {
+                    this.stop();
+                }
                 // this.checkCollisions();
             }, this.fps);
         }
@@ -39,14 +46,16 @@ class Game {
 
     clear() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.player.clear();
     }
 
     move() {
-        // this.player.move();
+        this.player.move();
         this.enemy.move();
     }
 
     checkCollisions() {
+
     }
 
     checkScore() {
