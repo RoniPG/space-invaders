@@ -33,8 +33,6 @@ class Player {
         }
         this.bullets.forEach(bullet => bullet.draw());
         this.setShotInterval++;
-        console.log("this.bullets.length: ", this.bullets.length);
-         
     }
 
     onKeyEvent(event) {
@@ -49,6 +47,7 @@ class Player {
     shoot() {
         if (this.setShotInterval>= 10) {
             const bullet = new Bullet(this.ctx, this.x + this.playerImg.width / 2, this.y - 10);
+            bullet.shootAudio.play();
             this.bullets.push(bullet);
             this.setShotInterval = 0;    
         }
@@ -63,17 +62,14 @@ class Player {
         // Verificar las teclas actualmente activas y realizar acciones
         if (this.keys[ARROW_LEFT] && this.x >= 10) {
             this.x -= this.vx;
-            console.log('moving left');
         }
 
         if (this.keys[ARROW_RIGHT] && this.x + this.width <= this.ctx.canvas.width - 10) {
             this.x += this.vx;
-            console.log('moving right');
         }
 
         if (this.keys[SPACE] || this.keys[ARROW_UP]) {
             this.shoot();
-            console.log('shooting!');
         }
 
         // Mover las balas

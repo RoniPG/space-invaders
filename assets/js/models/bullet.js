@@ -7,6 +7,9 @@ class Bullet {
         this.bulletColor = 'red';
         this.width = 5;
         this.height = 20;
+        this.shootAudio = new Audio()
+        this.shootAudio.src = 'assets/audio/shoot.wav'
+        this.shootAudio.volume = 0.1;
     }
 
     draw() {

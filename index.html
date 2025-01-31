@@ -1,16 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Invaders</title>
 </head>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <link rel="stylesheet" href="/assets/css/index.css">
+
 <body>
-    
-    <canvas id="board"></canvas>
-    
+    <div id="screens">
+        <!-- Pantalla Principal -->
+        <div id="menu-screen" class="screen">
+            <h1 class="title">SPACE INVADERS</h1>
+            <button id="start-btn">Start Game</button>
+            <button id="howto-btn">How to Play</button>
+            <button id="maxscore-btn">Scores</button>
+        </div>
+
+        <!-- Pantalla del Juego -->
+        <div id="game-screen" class="screen hidden">
+            <canvas id="board"></canvas>
+        </div>
+
+        <!-- Pantalla de Game Over -->
+        <div id="gameover-screen" class="screen hidden">
+            <h1 class="title">GAME OVER</h1>
+            <button id="restart-btn">Restart</button>
+            <button id="menu-btn">Main Menu</button>
+        </div>
+
+        <!-- Pantalla de Pausa -->
+        <div id="pause-screen" class="screen hidden">
+            <h1 class="title">PAUSED</h1>
+            <button id="resume-btn">Resume</button>
+            <button id="exit-btn">Exit</button>
+        </div>
+
+        <!-- Pantalla de How To -->
+        <div id="howto-screen" class="screen hidden">
+            <h1 class="title">How to Play</h1>
+            <p>🚀 Move :</p>
+            <div class="squares">
+                <i class="fa fa-caret-square-o-left"></i>
+                <i class="fa fa-caret-square-o-right"></i>
+            </div>
+            <p>👾 Shoot:</p>
+            <div class=" squares">
+                <i class="fa fa-caret-square-o-up"></i>
+                <i class="fa fa-minus" id="space-key"></i>
+            </div>
+            <p class="destroy">💥 Destroy all enemies before they reach you!</p>
+            <p>🎯 Aim for high scores!</p>
+            <button id="back-btn">Back to Menu</button>
+        </div>
+
+        <!-- Pantalla de Max Score -->
+        <div id="maxscore-screen" class="screen hidden">
+            <h1 class="title">High Scores</h1>
+            <table class="table">
+                <thead>
+                    <tr class="cells">
+                        <th class="sub-title">Rank</th>
+                        <th class="sub-title">Name</th>
+                        <th class="sub-title">Score</th>
+                    </tr>
+                </thead>
+                <tbody id="score-list"></tbody>
+            </table>
+            <button id="scoreback-btn">Back to Menu</button>
+        </div>
+
+        <!-- Pantalla de Max Score -->
+        <div id="name-screen" class="screen hidden">
+            <h2 class="title">Enter Your Name</h2>
+            <input type="text" id="player-name" placeholder="Your name...">
+            <button id="save-btn">Save</button> 
+        </div>
+    </div>
+
     <script src="/assets/js/constants.js"></script>
+    <script src="/assets/js/models/score.js"></script>
     <script src="/assets/js/models/bullet.js"></script>
     <script src="/assets/js/models/enemy.js"></script>
     <script src="/assets/js/models/player.js"></script>
@@ -18,4 +93,5 @@
     <script src="/assets/js/models/game.js"></script>
     <script src="/assets/js/index.js"></script>
 </body>
+
 </html>

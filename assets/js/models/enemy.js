@@ -1,103 +1,43 @@
 class Enemy {
-    constructor(ctx) {
+    constructor(ctx, x, y, vx, type) {
         this.ctx = ctx;
+        this.type = type;
         this.width = 44;
         this.height = 32;
-        this.enemyMap = [
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [2, 2, 2, 3, 3, 3, 3, 2, 2, 2],
-            [2, 2, 2, 3, 3, 3, 3, 2, 2, 2],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-        ];
-        this.enemyRows = [];
-        this.createEnemies();
-        this.vx = 1;
+        this.x = x;
+        this.y = y + this.height;
+        this.vx = vx; // Velocidad de movimiento
+        this.vy = 0;
+
+        this.img = new Image();
+        this.img.src = `assets/images/enemy${type}.png`; // Imagen según tipo de enemigo
+        this.img.isReady = false;
+        this.img.onload = () => {
+            this.img.isReady = true;
+        };
+
+        this.deathSound = new Audio();
+        this.deathSound.src = 'assets/audio/enemy-death.wav';
+        this.deathSound.volume = 0.1;
     }
+
     draw() {
-        this.enemyRows.flat().forEach((enemy) => {
-            this.ctx.drawImage(
-                enemy.img,
-                enemy.x,
-                enemy.y,
-                this.width,
-                this.height,
-            )
-        })
-    }
-    move() {
-        const rightmostEnemy = this.findRightmostEnemy(this.enemyRows);
-        const leftmostEnemy = this.findLeftmostEnemy(this.enemyRows);
-
-        if (rightmostEnemy.x + this.width >= this.ctx.canvas.width ||
-            leftmostEnemy.x < 0
-        ) {
-            this.vx *= -1;
-            this.enemyRows.flat().forEach((enemy) => {
-            enemy.y += 35;
-            });
+        if (this.img.isReady) {
+            this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
         }
-        this.enemyRows.flat().forEach((enemy) => {
-            // console.log(enemy.x);
-            enemy.x += this.vx;
-        })
-    }
-    // Método para encontrar el enemigo más a la izquierda
-    findRightmostEnemy() {
-        let rightmostEnemy = null; // Inicializamos con null
-        let maxX = -Infinity; // Valor muy pequeño para comparar posiciones
-
-        this.enemyRows.flat().forEach((enemy) => {
-            if (enemy.x > maxX) {
-                maxX = enemy.x;
-                rightmostEnemy = enemy;
-            }
-        });
-
-        return rightmostEnemy;
-    }
-    // Método para encontrar el enemigo más a la izquierda
-    findLeftmostEnemy() {
-        let leftmostEnemy = null;
-        let minX = Infinity;
-
-        this.enemyRows.flat().forEach((enemy) => {
-            if (enemy.x < minX) {
-                minX = enemy.x;
-                leftmostEnemy = enemy;
-            }
-        });
-
-        return leftmostEnemy;
     }
 
-    createEnemies() {
-        // Itera sobre cada fila del mapa de enemigos (this.enemyMap es una matriz bidimensional)
-        this.enemyMap.forEach((row, rowIndex) => {
-
-            // Inicializa un array vacío para la fila actual en el arreglo this.enemyRows
-            this.enemyRows[rowIndex] = [];
-
-            // Itera sobre cada número (enemigo) en la fila actual
-            row.forEach((enemyNumber, enemyIndex) => {
-
-                // Si el valor en la posición actual de la fila es mayor que 0, significa que hay un enemigo
-                if (enemyNumber > 0) {
-                    // Crea un nuevo enemigo y lo agrega a la fila correspondiente
-                    const img = new Image();
-                    img.src = `assets/images/enemy${enemyNumber}.png`; // Carga de imagen correcta
-                    this.enemyRows[rowIndex].push(
-                        {
-                            x: enemyIndex * 50,
-                            y: rowIndex * 35,
-                            img: img,
-                        }
-                        // new Enemy(enemyIndex * 50, rowIndex * 35, enemyNumber)
-                    );
-                }
-            });
-        });
+    move() {
+        this.x += this.vx;
     }
+
+    collideWith(el) {
+        return (
+            this.x < el.x + el.width &&
+            this.x + this.width > el.x &&
+            this.y < el.y + el.height &&
+            this.y + this.height > el.y
+        );
+    }
+    
 }
-
